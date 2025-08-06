@@ -1,5 +1,7 @@
 # postgres-recovery-steps
 
+Just a place to hold the yamls and readme for running a pg_restore fro ma pg-dump file. Also a tmp installation is included incase the recovery from a dump wants to be tested in isolation.
+
 ### Run the recovery pod to run pg_restore.
 
 Ensure the pg dump file is available on a local mount. Find the relevant volume using lsblk and mount the disk ( ex. /dev/vdc ) to a local path.
