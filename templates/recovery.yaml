@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pg15-recovery
+spec:
+  containers:
+    - name: pg
+      image: postgres:15
+      env:
+        - name: PGPASSWORD
+          value: "postgres"
+      command: ["pg_restore"]
+      args:
+        - "-h"
+        - "<DESTINATION_SVC>.<DESTINATION_NAMESPACE>.svc.cluster.local"
+        - "-U"
+        - "postgres"
+        - "-d"
+        - "argo_workflows"
+        - "--verbose"
+        - "/mnt/backup/<FILE_NAME>.dump"
+      volumeMounts:
+        - name: pgdata
+          mountPath: /mnt/backup
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+  volumes:
+    - name: pgdata
+      persistentVolumeClaim:
+        claimName: old-pvc-0
+  restartPolicy: Never
